@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <head>
-  <title>OpenAI Quickstart</title>
-  <link
-    rel="shortcut icon"
-    href="{{ url_for('static', filename='dog.png') }}"
-  />
-  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+    <title>OpenAI Quickstart</title>
+    <link
+            rel="shortcut icon"
+            href="{{ url_for('static', filename='dog.png') }}"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}"/>
 </head>
 
 <body>
-  <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
-  <h3>Name my pet</h3>
-  <form action="/" method="post">
-    <input type="text" name="animal" placeholder="Enter an animal" required />
-    <input type="submit" value="Generate names" />
-  </form>
-  {% if result %}
-  <div class="result">{{ result }}</div>
-  {% endif %}
+<img src="{{ url_for('static', filename='dog.png') }}" class="icon"/>
+<h3>Complete a prompt</h3>
+<form action="/" method="post">
+    <input type="text" name="prompt_field" placeholder="Enter a prompt" required/>
+    <input type="submit" value="Generate"/>
+</form>
+{% if prompt_text %}
+    <h2>Your input:</h2>
+    <div class="prompt_text">{{ prompt_text }}</div>
+{% endif %}
+{% if result %}
+    <h2>Result:</h2>
+    <div class="result">{{ result }}</div>
+{% endif %}
 </body>
