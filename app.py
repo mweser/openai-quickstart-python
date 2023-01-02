@@ -21,6 +21,7 @@ def index():
     prompt_to_render = ""
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
+
         response = openai.Completion.create(
             model="text-davinci-002",
             prompt=in_prompt,
@@ -28,7 +29,9 @@ def index():
             max_tokens=500,
             top_p=1.0,
             frequency_penalty=0.0,
-            presence_penalty=0.0
+            presence_penalty=0.0,
+            echo=True,
+
         )
         usage_obj = response.usage
 
@@ -43,6 +46,43 @@ def index():
     result = request.args.get("result")
     print(result)
     return render_template("index.html", result=result, your_input=prompt_to_render)
+
+
+unstructured_prompt = 'A table summarizing the fruits from Goocrux:\n\n' \
+                 'There are many fruits that were found on the recently discovered ' \
+                 'planet Goocrux. There are neoskizzles that grow there, which are ' \
+                 'purple and taste like candy. There are also loheckles, which are a ' \
+                 'grayish blue fruit and are very tart, a little bit like a lemon. ' \
+                 'Pounits are a bright green color and are more savory than sweet. ' \
+                 'There are also plenty of loopnovas which are a neon pink flavor and ' \
+                 'taste like cotton candy. Finally, there are fruits called glowls, which ' \
+                 'have a very sour and bitter taste which is acidic and caustic, and a pale orange ' \
+                 'tinge to them.\n\n' \
+                 '| Fruit | Color | Flavor |'
+
+
+parse_unstructured_data = {
+    "model": "text-davinci-003",
+    "prompt": "A table summarizing the fruits from Goocrux:\n\nThere are many fruits that were found on the recently discovered planet Goocrux. There are neoskizzles that grow there, which are purple and taste like candy. There are also loheckles, which are a grayish blue fruit and are very tart, a little bit like a lemon. Pounits are a bright green color and are more savory than sweet. There are also plenty of loopnovas which are a neon pink flavor and taste like cotton candy. Finally, there are fruits called glowls, which have a very sour and bitter taste which is acidic and caustic, and a pale orange tinge to them.\n\n| Fruit | Color | Flavor |",
+    "temperature": 0,
+    "max_tokens": 100,
+    "top_p": 1,
+    "frequency_penalty": 0,
+    "presence_penalty": 0
+}
+
+text2Cmd = {
+    "model": "text-davinci-003",
+    "prompt": "Convert this text to a programmatic command:\n\nExample: Ask Constance "
+              "if we need some bread\nOutput: send-msg `find constance` Do we need some bread?\n\n"
+              "Reach out to the ski store and figure out if I can get my skis fixed before "
+              "I leave on Thursday",
+    "temperature": 0,
+    "max_tokens": 100,
+    "top_p": 1,
+    "frequency_penalty": 0.2,
+    "presence_penalty": 0
+}
 
 
 def codegen_prompt(language):
