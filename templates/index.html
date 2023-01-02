@@ -12,8 +12,10 @@
 <img src="{{ url_for('static', filename='dog.png') }}" class="icon"/>
 <h3>Complete a prompt</h3>
 <form action="/" method="post">
-    <input type="text" name="prompt_field" placeholder="Enter a prompt" />
-    <input type="submit" value="Generate"/>
+    <textarea name="prompt_field" cols="40" rows="5" placeholder="Enter a prompt"></textarea>
+
+{#    <input type="text" name="prompt_field" placeholder="Enter a prompt" />#}
+    <input type="submit" value="Translate"/>
 </form>
 {#{% if your_input %}#}
 {#<h2>Your input:</h2>#}

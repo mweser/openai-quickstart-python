@@ -21,11 +21,20 @@ def index():
     prompt_to_render = ""
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
+        prompt_full = f"Translate all string literals into " \
+                      f"1. French, " \
+                      f"2. Spanish  " \
+                      f"3. Japanese " \
+                      f"4. Farsi " \
+                      f"5. Tifinagh " \
+                      f"6. Chinese simplified " \
+                      f"7. Pig Latin:\n\n" \
+                      f"{in_prompt}"
 
         response = openai.Completion.create(
             model="text-davinci-002",
-            prompt=in_prompt,
-            temperature=0,
+            prompt=prompt_full,
+            temperature=0.3,
             max_tokens=500,
             top_p=1.0,
             frequency_penalty=0.0,
@@ -48,18 +57,27 @@ def index():
     return render_template("index.html", result=result, your_input=prompt_to_render)
 
 
-unstructured_prompt = 'A table summarizing the fruits from Goocrux:\n\n' \
-                 'There are many fruits that were found on the recently discovered ' \
-                 'planet Goocrux. There are neoskizzles that grow there, which are ' \
-                 'purple and taste like candy. There are also loheckles, which are a ' \
-                 'grayish blue fruit and are very tart, a little bit like a lemon. ' \
-                 'Pounits are a bright green color and are more savory than sweet. ' \
-                 'There are also plenty of loopnovas which are a neon pink flavor and ' \
-                 'taste like cotton candy. Finally, there are fruits called glowls, which ' \
-                 'have a very sour and bitter taste which is acidic and caustic, and a pale orange ' \
-                 'tinge to them.\n\n' \
-                 '| Fruit | Color | Flavor |'
+translation_example = {
+    "model": "text-davinci-003",
+    "prompt": "Translate this into 1. French, 2. Spanish and 3. Japanese and 4. Farsi:\n\nWhere do you live in the city?\n\n1.",
+    "temperature": 0.3,
+    "max_tokens": 100,
+    "top_p": 1,
+    "frequency_penalty": 0,
+    "presence_penalty": 0
+}
 
+unstructured_prompt = 'A table summarizing the fruits from Goocrux:\n\n' \
+                      'There are many fruits that were found on the recently discovered ' \
+                      'planet Goocrux. There are neoskizzles that grow there, which are ' \
+                      'purple and taste like candy. There are also loheckles, which are a ' \
+                      'grayish blue fruit and are very tart, a little bit like a lemon. ' \
+                      'Pounits are a bright green color and are more savory than sweet. ' \
+                      'There are also plenty of loopnovas which are a neon pink flavor and ' \
+                      'taste like cotton candy. Finally, there are fruits called glowls, which ' \
+                      'have a very sour and bitter taste which is acidic and caustic, and a pale orange ' \
+                      'tinge to them.\n\n' \
+                      '| Fruit | Color | Flavor |'
 
 parse_unstructured_data = {
     "model": "text-davinci-003",
