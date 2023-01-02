@@ -6,6 +6,8 @@ from flask import Flask, redirect, render_template, request, url_for
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+text_model = "text-davinci-002"
+code_model = "code-davinci-002"
 
 # frequency_penalty:
 #
@@ -21,13 +23,12 @@ def index():
     horiz_line = "\n**************************\n"
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
-        prompt_full = f"Translate to French and preserve formatting:\n\n" \
-                      f"{in_prompt}"
+        prompt_full = in_prompt
 
         print(f'{horiz_line}PROMPT:\n{prompt_full}{horiz_line}')
 
         response = openai.Completion.create(
-            model="text-davinci-002",
+            model=code_model,
             prompt=prompt_full,
             temperature=0,
             max_tokens=500,
@@ -51,6 +52,17 @@ def index():
     print(f'RESULT:\n{result}{horiz_line}')
     return render_template("index.html", result=result)
 
+
+seq_code_prompt = '''
+"""
+1. Prompt user to input a phone number
+2. Prompt to input a nickname
+3. Save results in a data class called Vendor
+4. Save results to a sqlite database indexed by id
+"""
+'''
+
+translation_prefix = f"Translate to French and preserve formatting:\n\n"
 
 translation_example = {
     "model": "text-davinci-003",
