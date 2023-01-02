@@ -23,7 +23,14 @@ def index():
     horiz_line = "\n**************************\n"
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
-        prompt_full = in_prompt
+
+        translate_to_kotlin_str = "Translate to Kotlin (use Exposed for database and do NOT use Android libraries)"
+        translate_to_kotlin_str = ""
+
+        prompt_full = f'"""' \
+                      f'{in_prompt}' \
+                      f'"""' \
+                      f'\n\n {translate_to_kotlin_str}'
 
         print(f'{horiz_line}PROMPT:\n{prompt_full}{horiz_line}')
 
@@ -31,7 +38,7 @@ def index():
             model=code_model,
             prompt=prompt_full,
             temperature=0,
-            max_tokens=500,
+            max_tokens=4000,
             top_p=1.0,
             frequency_penalty=0.0,
             presence_penalty=0.0,

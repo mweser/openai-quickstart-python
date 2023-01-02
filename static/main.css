@@ -76,6 +76,12 @@ input[type="submit"] {
     border: 1px solid #10a37f;
 }
 
+.input_box {
+    padding: 0px;
+    white-space: pre-wrap;
+    border: 1px solid #10a37f;
+}
+
 h2 {
     font-weight: bold;
     margin-top: 40px;
