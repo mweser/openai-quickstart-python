@@ -9,9 +9,10 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route("/", methods=("GET", "POST"))
 def index():
+    prompt_to_render = ""
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
-        render_template("index.html", prompt_text=in_prompt)
+        prompt_to_render = in_prompt
         response = openai.Completion.create(
             model="text-davinci-002",
             prompt=in_prompt,
@@ -25,7 +26,7 @@ def index():
 
     result = request.args.get("result")
     print(result)
-    return render_template("index.html", result=result)
+    return render_template("index.html", result=result, your_input=prompt_to_render)
 
 
 def codegen_prompt(language):

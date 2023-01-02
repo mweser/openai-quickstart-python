@@ -15,10 +15,11 @@
     <input type="text" name="prompt_field" placeholder="Enter a prompt" required/>
     <input type="submit" value="Generate"/>
 </form>
-{% if prompt_text %}
+{% if your_input %}
     <h2>Your input:</h2>
-    <div class="prompt_text">{{ prompt_text }}</div>
+    <div class="result">{{ your_input }}</div>
 {% endif %}
+
 {% if result %}
     <h2>Result:</h2>
     <div class="result">{{ result }}</div>
