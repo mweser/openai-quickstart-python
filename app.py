@@ -18,28 +18,23 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route("/", methods=("GET", "POST"))
 def index():
-    prompt_to_render = ""
+    horiz_line = "\n**************************\n"
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
-        prompt_full = f"Translate all string literals into " \
-                      f"1. French, " \
-                      f"2. Spanish  " \
-                      f"3. Japanese " \
-                      f"4. Farsi " \
-                      f"5. Tifinagh " \
-                      f"6. Chinese simplified " \
-                      f"7. Pig Latin:\n\n" \
+        prompt_full = f"Translate to French and preserve formatting:\n\n" \
                       f"{in_prompt}"
+
+        print(f'{horiz_line}PROMPT:\n{prompt_full}{horiz_line}')
 
         response = openai.Completion.create(
             model="text-davinci-002",
             prompt=prompt_full,
-            temperature=0.3,
+            temperature=0,
             max_tokens=500,
             top_p=1.0,
             frequency_penalty=0.0,
             presence_penalty=0.0,
-            echo=True,
+            echo=False,
 
         )
         usage_obj = response.usage
@@ -49,12 +44,12 @@ def index():
                     f'Completion:\t{usage_obj.completion_tokens}\n' \
                     f'Total:\t\t{usage_obj.total_tokens}'
 
-        print(usage_str)
+        print(f'{horiz_line}{usage_str}{horiz_line}')
         return redirect(url_for("index", result=response.choices[0].text))
 
     result = request.args.get("result")
-    print(result)
-    return render_template("index.html", result=result, your_input=prompt_to_render)
+    print(f'RESULT:\n{result}{horiz_line}')
+    return render_template("index.html", result=result)
 
 
 translation_example = {
