@@ -12,7 +12,6 @@ def index():
     prompt_to_render = ""
     if request.method == "POST":
         in_prompt = request.form["prompt_field"]
-        prompt_to_render = in_prompt
         response = openai.Completion.create(
             model="text-davinci-002",
             prompt=in_prompt,
@@ -22,6 +21,14 @@ def index():
             frequency_penalty=0.0,
             presence_penalty=0.0
         )
+        usage_obj = response.usage
+
+        usage_str = f'TOKEN USAGE (Model: {response.model})\n' \
+                    f'Prompt:\t\t{usage_obj.prompt_tokens}\n' \
+                    f'Completion:\t{usage_obj.completion_tokens}\n' \
+                    f'Total:\t\t{usage_obj.total_tokens}'
+
+        print(usage_str)
         return redirect(url_for("index", result=response.choices[0].text))
 
     result = request.args.get("result")
